@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:note_taking/models/utils.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -74,6 +75,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                               SizedBox(height: 20),
                               TextFormField(
+                                obscureText: true,
                                 controller: passwordController,
                                 decoration: InputDecoration(
                                   labelText: "Password",
@@ -131,17 +133,19 @@ class _SignUpState extends State<SignUp> {
   }
 
   Future signUp() async {
-    final isValid = formKey.currentState!.validate();
-    if (isValid) return;
-    
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-      Navigator.pushReplacementNamed(context, '/listNotes'); // Navigate to the Notes page
-    } on FirebaseAuthException catch (e) {
-      print(e);
-    }
+  final isValid = formKey.currentState!.validate();
+  if (!isValid) return; // Check if form is not valid, then return early
+
+  try {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+    Navigator.pushReplacementNamed(context, '/listNotes'); // Navigate to the Notes page
+  } on FirebaseAuthException catch (e) {
+    print(e);
+    Utils.showSnackBar(e.message);
   }
+}
+
 }

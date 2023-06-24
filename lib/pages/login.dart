@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:note_taking/models/utils.dart';
 
 
 class Login extends StatefulWidget {
@@ -16,12 +17,7 @@ class _LoginState extends State<Login> {
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  @override
-  void dispose(){
-    mailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +62,7 @@ class _LoginState extends State<Login> {
               ),
               SizedBox(height: 20),
               TextFormField(
+                
                 controller: mailController,
                 decoration: InputDecoration(
                   labelText: "Email",
@@ -80,6 +77,7 @@ class _LoginState extends State<Login> {
               ),
               SizedBox(height: 20),
               TextFormField(
+                obscureText: true,
                 controller: passwordController,
                 decoration: InputDecoration(
                   labelText: "Password",
@@ -107,7 +105,9 @@ class _LoginState extends State<Login> {
               Row(
                 children: [
                   Text("Click here if you've",style: TextStyle(fontSize: 16)),
-                  TextButton(onPressed: () {}, child: Text("Forgotten your Password",style: TextStyle(fontSize: 16))),
+                  TextButton(onPressed: () {
+                    Navigator.pushNamed(context, "/password");
+                  }, child: Text("Forgotten your Password",style: TextStyle(fontSize: 16))),
                 ],
               ),
             ],
@@ -143,17 +143,20 @@ class _LoginState extends State<Login> {
     );
   }
  Future signIn() async {
-    final isValid = formKey.currentState!.validate();
-    if (isValid) return;
+  final isValid = formKey.currentState!.validate();
+  if (!isValid) return; // Check if form is not valid, then return early
+  
   try {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: mailController.text.trim(),
       password: passwordController.text.trim(),
     );
     Navigator.pushReplacementNamed(context, '/listNotes');
-  } catch (e) {
+  }on FirebaseAuthException catch (e) {
     print('Sign-in error: $e');
+    Utils.showSnackBar(e.message);
   }
 }
+
 
 }
