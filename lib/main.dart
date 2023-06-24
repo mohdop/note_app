@@ -1,15 +1,11 @@
-
-import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:note_taking/models/note.dart';
 import 'package:note_taking/pages/listeNotes.dart';
 import 'package:note_taking/pages/login.dart';
 import 'package:note_taking/pages/noteTake.dart';
+import 'package:note_taking/pages/signUp.dart';
 import 'package:note_taking/pages/voir_note.dart';
-import 'colors.dart';
 
 
 void main() async{
@@ -18,13 +14,14 @@ void main() async{
   runApp( MaterialApp(
     theme:ThemeData.dark(),
     debugShowCheckedModeBanner: false,
-    home: Login(),
+    home: SignUp(),
     initialRoute: "",
     routes: {
       "/takeNote": (context) => newNote(),
       "/listNotes":(context) =>  Notes(),
       "/voirNote":(context) => voirNote(),
       "/connexion":(context)=> Login(),
+      "/inscription":(context) => SignUp(),
       
     },
   ));
