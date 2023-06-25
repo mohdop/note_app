@@ -19,42 +19,54 @@ class _NotesState extends State<Notes> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: (){
-        Navigator.pushNamed(context, "/takeNote");
-      },child: Icon(Icons.add,color: Colors.white,),
-      backgroundColor: Colors.grey[800],
-      ),
-      appBar:AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Text("My notes",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23),),
-      ) ,
-      body: StreamBuilder<List<Note>>(
-      stream: readUserNotes(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text("Error: ${snapshot.error}");
-        } else if (snapshot.hasData) {
-          final notes = snapshot.data!;
-          if (notes.isEmpty) {
-            return noNote();
-          } else {
-            return ListView(
-              children: notes.map(buildnotes).toList(),
-            );
-          }
-        } else {
-          // Check internet connectivity here
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          } else {
-            return Text("You're not connected to the internet");
-          }
-        }
+    return WillPopScope(
+       onWillPop: () async {
+        return false;
       },
-    ),
-  );
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: (){
+          Navigator.pushNamed(context, "/takeNote");
+        },child: Icon(Icons.add,color: Colors.white,),
+        backgroundColor: Colors.grey[800],
+        ),
+        appBar:AppBar(
+          
+          actions: [
+            IconButton(onPressed: (){
+              FirebaseAuth.instance.signOut();
+              Navigator.pushReplacementNamed(context, '/connexion');
+            }, icon: Icon(Icons.logout)),
+          ],
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          title: Text("My notes",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23),),
+        ) ,
+        body: StreamBuilder<List<Note>>(
+        stream: readUserNotes(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text("Error: ${snapshot.error}");
+          } else if (snapshot.hasData) {
+            final notes = snapshot.data!;
+            if (notes.isEmpty) {
+              return noNote();
+            } else {
+              return ListView(
+                children: notes.map(buildnotes).toList(),
+              );
+            }
+          } else {
+            // Check internet connectivity here
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else {
+              return Text("You're not connected to the internet");
+            }
+          }
+        },
+      ),
+      ),
+    );
   }
 
 

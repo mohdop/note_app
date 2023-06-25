@@ -1,3 +1,4 @@
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:note_taking/pages/login.dart';
 import 'package:note_taking/pages/noteTake.dart';
 import 'package:note_taking/pages/password.dart';
 import 'package:note_taking/pages/signUp.dart';
+import 'package:note_taking/pages/verifyEmail.dart';
 import 'package:note_taking/pages/voir_note.dart';
 
 
@@ -14,6 +16,17 @@ void main() async{
    WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp( MaterialApp(
+    localizationsDelegates: [
+    // Add the following delegates for the desired locales
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ],
+  supportedLocales: [
+    // Add the locales you want to support
+    const Locale('en'), // English
+    const Locale('fr'), // French
+  ],
+  locale: const Locale('fr'),
     scaffoldMessengerKey: Utils.messengerKey,
     theme:ThemeData.dark(),
     debugShowCheckedModeBanner: false,
@@ -25,7 +38,8 @@ void main() async{
       "/voirNote":(context) => voirNote(),
       "/connexion":(context)=> Login(),
       "/inscription":(context) => SignUp(),
-      "/password":(context) => password()
+      "/password":(context) => password(),
+      "/NoteTake":(context) => NoteTake()
       
     },
   ));
@@ -48,7 +62,7 @@ class _NoteTakeState extends State<NoteTake> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Notes();
+            return VerifyEmail();
           }else{
             return Login();
           }
@@ -58,15 +72,3 @@ class _NoteTakeState extends State<NoteTake> {
   }
 }
 
-/**Scaffold(
-      body:   StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Notes();
-          }else{
-            return Login();
-          }
-        }
-      ),
-    ); */

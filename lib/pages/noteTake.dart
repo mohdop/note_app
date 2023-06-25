@@ -104,8 +104,8 @@ class _newNoteState extends State<newNote> {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: Text("Attention"),
-                    content: Text("Veuillez remplir tous les champs."),
+                    title: Text("Empty field"),
+                    content: Text("Please fill  every field"),
                     actions: [
                       ElevatedButton(
                         style: ButtonStyle(

@@ -19,7 +19,7 @@ class _voirNoteState extends State<voirNote> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Note'),
+        title: Text(title),
       ),
       body: SingleChildScrollView(
         child: Padding(

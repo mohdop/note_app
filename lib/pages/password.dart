@@ -23,7 +23,7 @@ class _passwordState extends State<password> {
             padding: const EdgeInsets.symmetric(horizontal:28.0),
             child: Column(children: [
               SizedBox(height: 250,),
-              Text("Enter your email To retrieve password",style: TextStyle(fontSize: 20,color: Colors.teal[700],fontWeight: FontWeight.bold),maxLines: 4,),
+              Text("Enter your email To retrieve password",style: TextStyle(fontSize: 23,color: const Color.fromARGB(255, 211, 211, 211),fontWeight: FontWeight.bold),maxLines: 4,),
               SizedBox(height: 25,),
               TextFormField(
                   controller: emailController,
@@ -44,7 +44,20 @@ class _passwordState extends State<password> {
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
                   ),
-                ),
+                ),SizedBox(height: 100,),
+                ClipOval(
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
+                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                          EdgeInsets.all(26),
+                      ),
+                    ),
+                    onPressed: (){
+                      Navigator.pushNamed(context, "/connexion");
+                    }, child: Icon(Icons.arrow_back_ios)
+                    ),
+                )
             ]),
           ),
         ),

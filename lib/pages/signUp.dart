@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:note_taking/app_localizations_fr.dart';
 import 'package:note_taking/models/utils.dart';
 
 class SignUp extends StatefulWidget {
@@ -15,6 +16,7 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -89,6 +91,23 @@ class _SignUpState extends State<SignUp> {
                                 
                               ),
                               SizedBox(height: 20),
+                               TextFormField(
+                                obscureText: true,
+                                controller: confirmPasswordController,
+                                decoration: InputDecoration(
+                                  labelText: "Confirm Password",
+                                  hintText: 'Confirm your password',
+                                  border: OutlineInputBorder(),
+                                ),
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                validator: (value) {
+                                  if (value != passwordController.text) {
+                                    return 'Passwords do not match';
+                                  }
+                                  return null;
+                                },
+                               ),
+                              SizedBox(height: 20),
                               Container(
                                 width: double.infinity,
                                 height: 60,
@@ -96,7 +115,8 @@ class _SignUpState extends State<SignUp> {
                                   onPressed: signUp,
                                   child: Text('Sign Up',style: TextStyle(fontSize: 20)),
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
+                                     side: MaterialStateProperty.all<BorderSide>(BorderSide(color: Colors.grey)),
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
                                   ),
                                 ),
                               ),
@@ -117,9 +137,9 @@ class _SignUpState extends State<SignUp> {
                     Text("Already have an account?",style: TextStyle(fontSize: 18),),
                     TextButton(onPressed: (){
                       Navigator.pushNamed(context, "/connexion");
-                    }, child: Text("sign In",style: TextStyle(fontSize: 18)),
+                    }, child: Text(getTranslation(context, "sign In"),style: TextStyle(fontSize: 18))),
                     
-                    )
+                    
                   ],
                 ),
               ),
@@ -132,20 +152,20 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  Future signUp() async {
-  final isValid = formKey.currentState!.validate();
-  if (!isValid) return; // Check if form is not valid, then return early
+ Future signUp() async {
+    final isValid = formKey.currentState!.validate();
+    if (!isValid) return; // Check if form is not valid, then return early
 
-  try {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
-    Navigator.pushReplacementNamed(context, '/listNotes'); // Navigate to the Notes page
-  } on FirebaseAuthException catch (e) {
-    print(e);
-    Utils.showSnackBar(e.message);
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      Navigator.pushReplacementNamed(context, '/NoteTake'); // Navigate to the Notes page
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      Utils.showSnackBar(e.message);
+    }
   }
-}
 
 }
