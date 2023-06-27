@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:note_taking/models/note.dart';
 import '../noNote.dart';
 
-class Notes extends StatefulWidget {
+ class Notes extends StatefulWidget {
   const Notes({super.key});
 
   @override
@@ -27,19 +27,20 @@ class _NotesState extends State<Notes> {
         floatingActionButton: FloatingActionButton(onPressed: (){
           Navigator.pushNamed(context, "/takeNote");
         },child: Icon(Icons.add,color: Colors.white,),
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Colors.orange[300],
         ),
         appBar:AppBar(
-          
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
           actions: [
             IconButton(onPressed: (){
               FirebaseAuth.instance.signOut();
               Navigator.pushReplacementNamed(context, '/connexion');
-            }, icon: Icon(Icons.logout)),
+            }, icon: Icon(Icons.logout,color: Colors.orange[300],)),
           ],
           automaticallyImplyLeading: false,
           centerTitle: true,
-          title: Text("My notes",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23),),
+          title: Text("My notes",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23,color: Colors.orange[300]),),
         ) ,
         body: StreamBuilder<List<Note>>(
         stream: readUserNotes(),
@@ -95,7 +96,7 @@ class _NotesState extends State<Notes> {
 
    Widget buildnotes(Note note) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6),
+    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
     child: GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, "/voirNote", arguments: {
@@ -103,91 +104,106 @@ class _NotesState extends State<Notes> {
           'content': note.content,
         });
       },
-      child: Card(
-        color: note.color,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                " ${note.title}",
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+      child: Stack(
+        children: [
+          Container(
+          
+          decoration: BoxDecoration(
+             boxShadow: [
+        BoxShadow(
+          color: note.color.withOpacity(0.5),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(0, 3), // changes position of shadow
+        ),
+          ],
+            color: note.color.withOpacity(0.9),
+            borderRadius: BorderRadius.circular(30)),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "${note.content}",
+                  " ${note.title}",
                   style: const TextStyle(
+                    fontSize: 20,
                     color: Colors.white,
-                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 148.0),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("Warning"),
-                            content: Text("Do you want to delete this note?"),
-                            actions: [
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.blueGrey),
-                                ),
-                                child: Text("Delete"),
-                                onPressed: () {
-                                  final docUser = FirebaseFirestore.instance
-                                      .collection("notes")
-                                      .doc(note.id);
-                                  docUser.delete();
-                                  Navigator.pushNamed(context, "/listNotes");
-                                },
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text("Cancel"),
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.blueGrey),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    icon: Icon(Icons.delete),
-                    color: Colors.black,
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: Text( 
+                    "${note.content}",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  IconButton(
-                    onPressed: () =>
-                        _showEditDialog(note.id, note.title, note.content),
-                    icon: Icon(Icons.edit, color: Colors.black),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.only(left: 148.0),
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text("Warning"),
+                              content: Text("Do you want to delete this note?"),
+                              actions: [
+                                ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.blueGrey),
+                                  ),
+                                  child: Text("Delete"),
+                                  onPressed: () {
+                                    final docUser = FirebaseFirestore.instance
+                                        .collection("notes")
+                                        .doc(note.id);
+                                    docUser.delete();
+                                    Navigator.pushNamed(context, "/listNotes");
+                                  },
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Cancel"),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.blueGrey),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      icon: Icon(Icons.delete),
+                      color: Color.fromARGB(255, 200, 200, 200),
+                    ),
+                    IconButton(
+                      onPressed: () =>
+                          _showEditDialog(note.id, note.title, note.content),
+                      icon: Icon(Icons.edit, color: const Color.fromARGB(255, 200, 200, 200)),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
+        ]
       ),
     ),
   );

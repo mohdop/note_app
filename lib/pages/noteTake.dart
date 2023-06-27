@@ -36,112 +36,114 @@ class _newNoteState extends State<newNote> {
         centerTitle: true,
         title: Text("new Note"),
       ),
-      body: Padding(
-        padding:  EdgeInsets.symmetric(vertical:20.0, horizontal: 8),
-        child: Center(
-          child: Column(
-            children: [
-                TextField(
-                  cursorColor: Colors.blueGrey,
-                  keyboardType: TextInputType.multiline,
-                 maxLines: null,
-                controller: titleController,
-               decoration: InputDecoration(
-                
-                  hintText: "note title",
-                   hintStyle: TextStyle(color: Colors.grey[500]),
-                      border: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.circular(10.0), // Set the border radius
-                      ), focusedBorder: OutlineInputBorder(
-                        
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: Colors.blueGrey), // Custom border color when focused
-                        ),
-                      filled: false,
-                ),
-              ),
-               Padding(
-                 padding: const EdgeInsets.symmetric(vertical:12.0),
-                 child: TextField(
-                  cursorColor: Colors.blueGrey,
-                   minLines: 4,
-                  keyboardType: TextInputType.multiline,
-                 maxLines: null,
-                  controller: contentController,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding:  EdgeInsets.symmetric(vertical:20.0, horizontal: 8),
+          child: Center(
+            child: Column(
+              children: [
+                  TextField(
+                    cursorColor: Colors.blueGrey,
+                    keyboardType: TextInputType.multiline,
+                   maxLines: null,
+                  controller: titleController,
                  decoration: InputDecoration(
-                    hintText: "note content",
+                  
+                    hintText: "note title",
                      hintStyle: TextStyle(color: Colors.grey[500]),
                         border: OutlineInputBorder(
-                          
                           borderRadius:
                               BorderRadius.circular(10.0), // Set the border radius
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: Colors.blueGrey), // Custom border color when focused
-                        ),
+                        ), focusedBorder: OutlineInputBorder(
+                          
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(color: Colors.blueGrey), // Custom border color when focused
+                          ),
                         filled: false,
                   ),
-                             ),
-               ),
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
                 ),
-              onPressed: () async {
-                  final currentUser = FirebaseAuth.instance.currentUser;
-                  final userId = currentUser?.uid;
-                if (userId != null) {
-            final note = Note(
-              title: titleController.text.toUpperCase(),
-              content: contentController.text,
-              color: getRandomColor(),
-              userId: userId,
-            );
-            if (titleController.text.isEmpty || contentController.text.isEmpty) {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text("Empty field"),
-                    content: Text("Please fill  every field"),
-                    actions: [
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
-                        ),
-                        child: Text("OK"),
-                        onPressed: () {
-                          Navigator.pop(context); // Close the dialog
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else {
-              await createNote(note);
-              Navigator.pushNamed(context, "/listNotes");
-              titleController.text = "";
-              contentController.text = "";
-            }
-          }
-        },
-        child: Text("Create new note"),
-      ),
-              Padding(padding: EdgeInsets.symmetric(vertical: 12,horizontal: 142),
-              child: ElevatedButton(
+                 Padding(
+                   padding: const EdgeInsets.symmetric(vertical:12.0),
+                   child: TextField(
+                    cursorColor: Colors.blueGrey,
+                     minLines: 4,
+                    keyboardType: TextInputType.multiline,
+                   maxLines: null,
+                    controller: contentController,
+                   decoration: InputDecoration(
+                      hintText: "note content",
+                       hintStyle: TextStyle(color: Colors.grey[500]),
+                          border: OutlineInputBorder(
+                            
+                            borderRadius:
+                                BorderRadius.circular(10.0), // Set the border radius
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(color: Colors.blueGrey), // Custom border color when focused
+                          ),
+                          filled: false,
+                    ),
+                               ),
+                 ),
+              ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
-                ),
-                onPressed: (){
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
+                  ),
+                onPressed: () async {
+                    final currentUser = FirebaseAuth.instance.currentUser;
+                    final userId = currentUser?.uid;
+                  if (userId != null) {
+              final note = Note(
+                title: titleController.text.toUpperCase(),
+                content: contentController.text,
+                color: getRandomColor(),
+                userId: userId,
+              );
+              if (titleController.text.isEmpty || contentController.text.isEmpty) {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text("Empty field"),
+                      content: Text("Please fill  every field"),
+                      actions: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
+                          ),
+                          child: Text("OK"),
+                          onPressed: () {
+                            Navigator.pop(context); // Close the dialog
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              } else {
+                await createNote(note);
                 Navigator.pushNamed(context, "/listNotes");
-              },
-              
-               child: Text("Cancel")),
-              )
-            ],
+                titleController.text = "";
+                contentController.text = "";
+              }
+            }
+          },
+          child: Text("Create new note"),
+        ),
+                Padding(padding: EdgeInsets.symmetric(vertical: 12,horizontal: 142),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
+                  ),
+                  onPressed: (){
+                  Navigator.pushNamed(context, "/listNotes");
+                },
+                
+                 child: Text("Cancel")),
+                )
+              ],
+            ),
           ),
         ),
       ),

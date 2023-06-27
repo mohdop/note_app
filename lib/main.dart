@@ -28,7 +28,7 @@ void main() async{
   ],
   locale: const Locale('fr'),
     scaffoldMessengerKey: Utils.messengerKey,
-    theme:ThemeData.dark(),
+    theme:ThemeData(primarySwatch: Colors.orange),
     debugShowCheckedModeBanner: false,
     home: Login(),
     initialRoute: "",

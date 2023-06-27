@@ -63,18 +63,25 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: 20),
                 TextFormField(
-                  
                   controller: mailController,
                   decoration: InputDecoration(
                     labelText: "Email",
                     hintText: 'Enter your email',
-                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.mail_rounded, color: Colors.white),
+                    labelStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1),
+                    ),
+                    
                   ),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                                    validator: (email) => 
-                                    email != null && !EmailValidator.validate(email)
-                                    ?'Please enter a valide Email'
-                                    :null,
+                  validator: (email) =>
+                      email != null && !EmailValidator.validate(email)
+                          ? 'Please enter a valid Email'
+                          : null,
+                  style: TextStyle(color: Colors.white),
                 ),
                 SizedBox(height: 20),
                 TextFormField(
@@ -83,22 +90,31 @@ class _LoginState extends State<Login> {
                   decoration: InputDecoration(
                     labelText: "Password",
                     hintText: 'Enter your password',
-                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    prefixIcon: Icon(Icons.lock, color: Colors.white),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1),
+                    ),
+                    
                   ),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                                    validator: (value) => value != null && value.length <6
-                                    ?'password must be at least six characters long'
-                                    :null,
+                  validator: (value) => value != null && value.length < 6
+                      ? 'Password must be at least six characters long'
+                      : null,
+                  style: TextStyle(color: Colors.white),
                 ),
+
                 SizedBox(height: 20),
                 Container(
                   width: double.infinity,
                   height: 60,
                   child: ElevatedButton(
                     onPressed: signIn,
-                    child: Text('Sign In',style: TextStyle(fontSize: 20)),
+                    child: Text('Sign In',style: TextStyle(fontSize: 20,color: Colors.white)),
                     style: ButtonStyle(
-                     side: MaterialStateProperty.all<BorderSide>(BorderSide(color: Colors.grey)),
+                     side: MaterialStateProperty.all<BorderSide>(BorderSide(color: const Color.fromARGB(255, 227, 227, 227))),
                       backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
                     ),
                   ),
@@ -107,7 +123,7 @@ class _LoginState extends State<Login> {
                 Row(
                   
                   children: [
-                    Text("Click here if you've",style: TextStyle(fontSize: 14.5)),
+                    Text("Click here if you've",style: TextStyle(fontSize: 14.5,color: Colors.white)),
                     TextButton(onPressed: () {
                       Navigator.pushNamed(context, "/password");
                     }, child: Text("Forgotten your Password",style: TextStyle(fontSize: 14.5))),

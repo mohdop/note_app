@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -67,13 +66,20 @@ class _SignUpState extends State<SignUp> {
                                 decoration: InputDecoration(
                                   labelText: "Email",
                                   hintText: 'Enter your email',
-                                  border: OutlineInputBorder(),
+                                   labelStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    prefixIcon: Icon(Icons.mail_rounded, color: Colors.white),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1),
+                    ),
                                 ),
                                 autovalidateMode: AutovalidateMode.onUserInteraction,
                                 validator: (email) => 
                                 email != null && !EmailValidator.validate(email)
                                 ?'Please enter a valide Email'
                                 :null,
+                                style: TextStyle(color: Colors.white),
                               ),
                               SizedBox(height: 20),
                               TextFormField(
@@ -82,13 +88,18 @@ class _SignUpState extends State<SignUp> {
                                 decoration: InputDecoration(
                                   labelText: "Password",
                                   hintText: 'Enter your password',
-                                  border: OutlineInputBorder(),
+                                  labelStyle: TextStyle(
+                                  color: Colors.white,
+                                ),prefixIcon: Icon(Icons.lock, color: Colors.white),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1),
+                    ),
                                 ),
                                  autovalidateMode: AutovalidateMode.onUserInteraction,
                                 validator: (value) => value != null && value.length <6
                                 ?'password must be at least six characters long'
                                 :null,
-                                
+                                style: TextStyle(color: Colors.white),
                               ),
                               SizedBox(height: 20),
                                TextFormField(
@@ -97,7 +108,12 @@ class _SignUpState extends State<SignUp> {
                                 decoration: InputDecoration(
                                   labelText: "Confirm Password",
                                   hintText: 'Confirm your password',
-                                  border: OutlineInputBorder(),
+                                   labelStyle: TextStyle(
+                      color: Colors.white,
+                    ),prefixIcon: Icon(Icons.check_circle_outline, color: Colors.white),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1),
+                    ),
                                 ),
                                 autovalidateMode: AutovalidateMode.onUserInteraction,
                                 validator: (value) {
@@ -105,7 +121,7 @@ class _SignUpState extends State<SignUp> {
                                     return 'Passwords do not match';
                                   }
                                   return null;
-                                },
+                                },style: TextStyle(color: Colors.white),
                                ),
                               SizedBox(height: 20),
                               Container(
@@ -113,7 +129,7 @@ class _SignUpState extends State<SignUp> {
                                 height: 60,
                                 child: ElevatedButton(
                                   onPressed: signUp,
-                                  child: Text('Sign Up',style: TextStyle(fontSize: 20)),
+                                  child: Text('Sign Up',style: TextStyle(fontSize: 20,color: Colors.white)),
                                   style: ButtonStyle(
                                      side: MaterialStateProperty.all<BorderSide>(BorderSide(color: Colors.grey)),
                       backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
