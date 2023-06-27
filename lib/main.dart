@@ -15,12 +15,13 @@ import 'package:note_taking/pages/voir_note.dart';
 void main() async{
    WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  final currentUser = FirebaseAuth.instance.currentUser;
   runApp( MaterialApp(
     scaffoldMessengerKey: Utils.messengerKey,
     theme:ThemeData(primarySwatch: Colors.orange),
     debugShowCheckedModeBanner: false,
     home: Login(),
-    initialRoute: "",
+    initialRoute: currentUser != null ? '/listNotes' : '/connexion',
     routes: {
       "/takeNote": (context) => newNote(),
       "/listNotes":(context) =>  Notes(),

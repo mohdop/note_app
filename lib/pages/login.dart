@@ -164,19 +164,20 @@ class _LoginState extends State<Login> {
   }
  Future signIn() async {
   final isValid = formKey.currentState!.validate();
-  if (!isValid) return; // Check if form is not valid, then return early
-  
+  if (!isValid) return;
+
   try {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: mailController.text.trim(),
       password: passwordController.text.trim(),
     );
     Navigator.pushReplacementNamed(context, '/listNotes');
-  }on FirebaseAuthException catch (e) {
+  } on FirebaseAuthException catch (e) {
     print('Sign-in error: $e');
     Utils.showSnackBar(e.message);
   }
 }
+
 
 
 }
