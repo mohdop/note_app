@@ -16,17 +16,6 @@ void main() async{
    WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp( MaterialApp(
-    localizationsDelegates: [
-    // Add the following delegates for the desired locales
-    GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ],
-  supportedLocales: [
-    // Add the locales you want to support
-    const Locale('en'), // English
-    const Locale('fr'), // French
-  ],
-  locale: const Locale('fr'),
     scaffoldMessengerKey: Utils.messengerKey,
     theme:ThemeData(primarySwatch: Colors.orange),
     debugShowCheckedModeBanner: false,

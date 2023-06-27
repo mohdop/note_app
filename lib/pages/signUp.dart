@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:note_taking/app_localizations_fr.dart';
 import 'package:note_taking/models/utils.dart';
 
 class SignUp extends StatefulWidget {
@@ -153,7 +152,7 @@ class _SignUpState extends State<SignUp> {
                     Text("Already have an account?",style: TextStyle(fontSize: 18),),
                     TextButton(onPressed: (){
                       Navigator.pushNamed(context, "/connexion");
-                    }, child: Text(getTranslation(context, "sign In"),style: TextStyle(fontSize: 18))),
+                    }, child: Text( "sign In",style: TextStyle(fontSize: 18))),
                     
                     
                   ],
