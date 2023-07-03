@@ -15,22 +15,18 @@ class VerifyEmail extends StatefulWidget {
 class _VerifyEmailState extends State<VerifyEmail> {
   bool isEmailVerified = false;
   Timer? timer;
-
   @override
   void initState(){
     super.initState();
     isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
-
     if(!isEmailVerified){
       sendVerificationEmail();
-
       timer = Timer.periodic(
         Duration(seconds: 3), 
         (_)=>checkEmailVerified(),
       );
     } 
   }
-  
   @override
     dispose(){
       timer?.cancel();
