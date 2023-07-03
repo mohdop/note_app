@@ -144,6 +144,7 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               SizedBox(height: 20,),
+              
             Padding(
               padding: const EdgeInsets.only(left:68.0),
               child: Center(
